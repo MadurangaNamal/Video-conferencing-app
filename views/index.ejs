@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <meta charset="UTF-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
+   <!--<link rel='stylesheet' href='/stylesheets/style.css' />--> 
+
+    <link rel="icon" type="image/png" href="/images/icons/favicon.ico"/>
+   
+      <link rel="stylesheet" type="text/css" href="/vendor/bootstrap/css/bootstrap.min.css">
+
+      <link rel="stylesheet" type="text/css" href="/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+   
+      <link rel="stylesheet" type="text/css" href="/vendor/animate/animate.css">
+  
+      <link rel="stylesheet" type="text/css" href="/vendor/css-hamburgers/hamburgers.min.css">
+   
+      <link rel="stylesheet" type="text/css" href="/vendor/select2/select2.min.css">
+ 
+      <link rel="stylesheet" type="text/css" href="/stylesheets/util.css">
+      <link rel="stylesheet" type="text/css" href="/stylesheets/main.css">
+      <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-auth.js"></script>
+
+
+    
+    <script>
+          var firebaseConfig = {
+    apiKey: "AIzaSyB9QNej7zblgWPhaAuev9eTMqrpoah_Uu4",
+    authDomain: "chat-app-9f4b6.firebaseapp.com",
+    databaseURL: "https://chat-app-9f4b6.firebaseio.com",
+    projectId: "chat-app-9f4b6",
+    storageBucket: "chat-app-9f4b6.appspot.com",
+    messagingSenderId: "1037961971849",
+    appId: "1:1037961971849:web:7e7b69a5d84104b443de58",
+    measurementId: "G-MDY2486G54"
+};
+
+        firebase.initializeApp(firebaseConfig);
+       // firebase.analytics();
+    </script>
+    <script type="text/javascript">
+
+function handleSignIn() {
+    var email = document.getElementById('email_container').value;
+    var password = document.getElementById('pasword_container').value;
+
+  firebase.auth().signInWithEmailAndPassword(email, password)
+  .then(function(){
+    location.replace('http://localhost:3000/users');
+    },
+  
+    function(error) {
+        
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        
+        if (errorCode == 'auth/user-not-found') {
+            alert('Invalid email !!');
+        } else {
+            alert(errorMessage);
+        }
+        console.log(error);
+       
+    }
+  
+  )
+};
+
+           function initApp() {
+
+            document.getElementById('submit_button').addEventListener('click', handleSignIn, false);
+
+        }
+        window.onload = function() {
+            initApp();
+        };
+    </script>
+
+
+  </head>
+  <body>
+
+    <div class="limiter">
+      <div class="container-login100">
+        <div class="wrap-login100">
+          <div class="login100-pic js-tilt" data-tilt>
+            <h4>JusTalk</h4>
+            <img src="/images/img-01.png" alt="IMG">
+          </div>
+  
+          <div class="login100-form validate-form">
+            <span class="login100-form-title">
+              Member Login
+            </span>
+            <form method="POST" action="/users"> 
+           <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
+              <input id="email_container" class="input100" type="text" name="email" placeholder="Email">
+              <span class="focus-input100"></span>
+              <span class="symbol-input100">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+              </span>
+            </div>
+  
+            <div class="wrap-input100 validate-input" data-validate = "Password is required">
+              <input id="pasword_container" class="input100" type="password" name="pass" placeholder="Password">
+              <span class="focus-input100"></span>
+              <span class="symbol-input100">
+                <i class="fa fa-lock" aria-hidden="true"></i>
+              </span>
+            </div>
+            
+            <div class="container-login100-form-btn">
+              <button id="submit_button" type="submit" class="login100-form-btn">
+                Login
+              </button>
+            </div>
+          </form>
+         
+  
+            <div class="text-center p-t-12">
+              <span class="txt1">
+                Forgot
+              </span>
+              <a class="txt2" href="#">
+                Username / Password?
+              </a>
+            </div><br><br>
+
+
+  
+            <div class="text-center p-t-35">
+              <a class="txt2" href="signup">
+                Create your Account
+                <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  
+    
+	
+    <script src="/vendor/jquery/jquery-3.2.1.min.js"></script>
+
+    <script src="/vendor/bootstrap/js/popper.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <script src="/vendor/select2/select2.min.js"></script>
+
+    <script src="/vendor/tilt/tilt.jquery.min.js"></script>
+    <script>
+     $('.js-tilt').tilt({
+        scale: 1.1
+      })
+      </script>
+     
+    
+ 
+    <script src="/javascripts/main.js"></script>
+
+  
+  </body>
+</html>

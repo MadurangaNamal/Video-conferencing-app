@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <meta charset="UTF-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
+   <!--<link rel='stylesheet' href='/stylesheets/style.css' />--> 
+
+    <link rel="icon" type="image/png" href="/images/icons/favicon.ico"/>
+   
+      <link rel="stylesheet" type="text/css" href="/vendor/bootstrap/css/bootstrap.min.css">
+
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+      <link rel="stylesheet" type="text/css" href="/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+   
+      <link rel="stylesheet" type="text/css" href="/vendor/animate/animate.css">
+  
+      <link rel="stylesheet" type="text/css" href="/vendor/css-hamburgers/hamburgers.min.css">
+   
+      <link rel="stylesheet" type="text/css" href="/vendor/select2/select2.min.css">
+ 
+      <link rel="stylesheet" type="text/css" href="/stylesheets/util.css">
+      <link rel="stylesheet" type="text/css" href="/stylesheets/main.css">
+
+      <script src="/socket.io/socket.io.js"></script>
+     
+  </head>
+  <body>
+
+
+    <div class="limiter">
+      <div class="container-login100">
+        <div class="wrap-login100">
+
+          <div class="login100-pic js-tilt" data-tilt>
+            <h4>JusTalk</h4>
+            <img src="/images/img-01.png" alt="IMG">
+          </div>
+        
+          <div class="col-md-4">
+
+             <h2> <span class="badge badge-pill badge-primary">Hello <%= name %> !</span></h2> <br><br>
+             
+              <div class="well">
+                  <h3>Online Users</h3><br>
+                  <ul class="list-group" id="users"></ul> 
+              <!--  <li class="list-group-item"><%= name %></li>-->
+              </div>
+      </div>
+    
+
+        </div>
+      </div>
+    </div>
+    
+  
+    
+	
+    <script src="/vendor/jquery/jquery-3.2.1.min.js"></script>
+
+    <script src="/vendor/bootstrap/js/popper.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <script src="/vendor/select2/select2.min.js"></script>
+
+    <script src="/vendor/tilt/tilt.jquery.min.js"></script>
+
+    <div id="mydiv" data-test=<%= name %>></div>
+    <script>
+    var username = document.getElementById('mydiv').dataset.test
+   $(function(){
+        var socket = io.connect();
+        var $users = $('#users');
+      
+        socket.emit('new user',username , function(data){
+                });
+
+        socket.on('get users', function(data){
+                var html = '';
+                for(i = 0; i< data.length; i++){
+                    html += '<li class="list-group-item">'+data[i]+'</li>';
+                }
+                $users.html(html);
+            });
+     });
+    </script>
+
+  
+    
+
+    <script>
+     $('.js-tilt').tilt({
+        scale: 1.1
+      });
+      </script>
+
+     
+    
+ 
+    <script src="/javascripts/main.js"></script>
+
+  
+  </body>
+</html>
