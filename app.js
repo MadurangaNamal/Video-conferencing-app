@@ -3,11 +3,14 @@ var bodyParser = require('body-parser');
 var Firebase = require('firebase');
 var session = require('express-session');
 const app = express();
+var randomstring = require("randomstring");
 
 //const user = require('./routes/users');
 //const name = user.name;
 users = [];
+var visitors = [];
 connections = [];
+const rooms = {};
 
 app.use(function(req, res, next) { //allow cross origin requests
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -39,6 +42,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var roomserviceRouter = require('./routes/roomservice');
 
 
 var http = require('http').createServer(app);
@@ -60,7 +64,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/signup', indexRouter);
+app.use('/chatRoom', roomserviceRouter);
 
 /*io.on('connection', function(socket){
     console.log('a user connected');

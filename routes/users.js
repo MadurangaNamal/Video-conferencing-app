@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Firebase = require('firebase');
-var session = require('express-session');
+
 
 
 var email;
@@ -38,12 +38,11 @@ ref.on('value', gotData, errData);
       console.log(err);
     }
     
-  res.render('users', { title: 'JusTalk | Users', name: name });
+  res.render('users', { title: 'JusTalk | Users', name: name ,rooms:rooms});
 
  
  
 });
-
 
 
 module.exports = router;
