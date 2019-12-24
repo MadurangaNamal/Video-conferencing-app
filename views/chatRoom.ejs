@@ -20,19 +20,25 @@
  
       <link rel="stylesheet" type="text/css" href="/stylesheets/util.css">
       <link rel="stylesheet" type="text/css" href="/stylesheets/main.css">
+
+      <script src="/socket.io/socket.io.js"></script>
     
-
-
-    
-
-
-  </head>
+    </head>
   <body>
 
     <div class="limiter">
       <div class="container-login100">
         <div class="wrap-login100">
-    
+          <div class="overflow-auto" id="message_container"></div>
+          <form id="send_container">
+              <div class="input-group">
+                  <span class="input-group-addon">Message</span>
+                  <input id="message_input" type="text" class="form-control" name="msg" placeholder="Enter text">
+                  <button type="submit" class="btn btn-primary" id="send_button">Send</button>
+                </div>
+        
+            
+          </form>
         </div>
       </div>
     </div>
@@ -48,12 +54,15 @@
     <script src="/vendor/select2/select2.min.js"></script>
 
     <script src="/vendor/tilt/tilt.jquery.min.js"></script>
+ 
     <script>
-     $('.js-tilt').tilt({
-        scale: 1.1
-      })
-      </script>
-     
+     $(function(){
+
+
+
+      
+     });
+    </script>
     
  
     <script src="/javascripts/main.js"></script>

@@ -40,6 +40,8 @@
         firebase.initializeApp(firebaseConfig);
        // firebase.analytics();
     </script>
+
+    
     <script type="text/javascript">
 
 function handleSignIn() {
@@ -48,7 +50,8 @@ function handleSignIn() {
 
   firebase.auth().signInWithEmailAndPassword(email, password)
   .then(function(){
-    location.replace('http://localhost:3000/users');
+
+    document.getElementById("login_form").submit();
     },
   
     function(error) {
@@ -57,7 +60,7 @@ function handleSignIn() {
         var errorMessage = error.message;
         
         if (errorCode == 'auth/user-not-found') {
-            alert('Invalid email !!');
+            alert('Unregisterd Email !!');
         } else {
             alert(errorMessage);
         }
@@ -68,6 +71,8 @@ function handleSignIn() {
   )
 };
 
+
+
            function initApp() {
 
             document.getElementById('submit_button').addEventListener('click', handleSignIn, false);
@@ -77,6 +82,13 @@ function handleSignIn() {
             initApp();
         };
     </script>
+     <script type="text/javascript">
+/*function postemail(){
+
+  document.getElementById("login_form").submit();
+}*/
+</script>
+
 
 
   </head>
@@ -94,7 +106,7 @@ function handleSignIn() {
             <span class="login100-form-title">
               Member Login
             </span>
-            <form method="POST" action="/users"> 
+            <form method="POST" action="/users" id="login_form">
            <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
               <input id="email_container" class="input100" type="text" name="email" placeholder="Email">
               <span class="focus-input100"></span>
@@ -112,11 +124,11 @@ function handleSignIn() {
             </div>
             
             <div class="container-login100-form-btn">
-              <button id="submit_button" type="submit" class="login100-form-btn">
+              <button id="submit_button" class="login100-form-btn">
                 Login
               </button>
             </div>
-          </form>
+       </form>
          
   
             <div class="text-center p-t-12">

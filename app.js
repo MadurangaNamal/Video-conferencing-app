@@ -3,14 +3,13 @@ var bodyParser = require('body-parser');
 var Firebase = require('firebase');
 var session = require('express-session');
 const app = express();
-var randomstring = require("randomstring");
+
 
 //const user = require('./routes/users');
 //const name = user.name;
 users = [];
-var visitors = [];
 connections = [];
-const rooms = {};
+
 
 app.use(function(req, res, next) { //allow cross origin requests
   res.setHeader("Access-Control-Allow-Origin", "*");

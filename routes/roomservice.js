@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
+var randomstring = require("randomstring");
 
-
+const rooms = {}
 router.get('/', function(req, res, next) {
-    res.render('chatRoom', { title: 'JusTalk | Chat Room' });
+    res.render('chatRoom', { title: 'JusTalk | Chat Room', rooms: rooms });
 });
 
 router.get('/video', function(req, res, next) {

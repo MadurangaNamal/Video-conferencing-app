@@ -62,7 +62,7 @@
     firebase.auth().createUserWithEmailAndPassword(email, password)
     .then(function(){
 
-       
+        document.getElementById("adduser").submit();
         location.replace('http://localhost:3000/');
     },
         function(error) {
@@ -111,7 +111,7 @@
                     <span class="login100-form-title">
               Member Register
             </span>
-                    <form method="POST" action="/users/add">
+                    <form method="POST" action="/users/add" id="adduser">
                     <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
                         <input id="user_email" class="input100" type="text" name="email" placeholder="Email">
                         <span class="focus-input100"></span>
@@ -137,7 +137,7 @@
                     </div>
 
                     <div class="container-login100-form-btn">
-                        <button id="click_button_for_singup" type="submit" class="login100-form-btn">
+                        <button id="click_button_for_singup" class="login100-form-btn">
                 Sign Up
               </button>
             </form>
