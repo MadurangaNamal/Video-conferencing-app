@@ -4,7 +4,7 @@
     <title><%= title %></title>
     <meta charset="UTF-8">
 	  <meta name="viewport" content="width=device-width, initial-scale=1">
-   <!--<link rel='stylesheet' href='/stylesheets/style.css' />--> 
+   
 
     <link rel="icon" type="image/png" href="/images/icons/favicon.ico"/>
    
@@ -25,6 +25,7 @@
       <link rel="stylesheet" type="text/css" href="/stylesheets/main.css">
 
       <script src="/socket.io/socket.io.js"></script>
+      <script src="/routes/roomservice.js"></script>
      
   </head>
   <body>
@@ -48,17 +49,27 @@
               <button type="button" class="btn btn-primary" id="roomsview">Join Chat</button> &nbsp;
               <button type="button" class="btn btn-danger" id="createRoom">Start New</button>
              </div>
-              <div class="well" id="sec1">
+              <div class="well" id="userlist">
                   <h3>Online Users</h3><br>
                   <ul class="list-group" id="users"></ul> 
-              <!--  <li class="list-group-item"><%= name %></li>-->
+              
               </div>
-              <div class="well" id="sec2" style="display: none">
-                <h3>Chat Rooms</h3><br> 
-                <ul class="list-group" id="users"></ul> 
-            <!--  <li class="list-group-item"><%= name %></li>-->
+              <div class="well" id="room-container" style="display: none">
+                <h3>Available Rooms</h3><br> 
+               <% Object.keys(rooms).forEach(room =>{ %>
+              <div><%= room %> &nbsp;
+              <button  class="btn btn-primary" onclick="window.location = '/chatRoom/<%= room %>?username=<%= name %>';">Send Request</button>
+              </div> 
+                <% }) %>
             </div>
-            
+            <div  class="well" id="room-create" style="display: none">
+              <h3>Create Chat Room</h3><br> 
+              <form action="/chatRoom/room" id="roomform" method="POST">
+                <input name="room" id="roomname" type="text" value="<%= name %>" style="display: none">&nbsp;
+                <button class="btn btn-danger" type="submit">Create new</button>
+                </form>
+              </div>
+ 
       </div>
     
 
@@ -83,17 +94,15 @@
 
      var $usrbtn = $('#usersview');
      var $roombtn = $('#roomsview');
-     var $createroom = $('#createRoom');
-
+    
      $usrbtn.click(function(){
-      $('#sec2').hide();
-      $('#sec1').show();
+      $('#room-container').hide();
+      $('#userlist').show();
 
      });
      $roombtn.click(function(){
-      $('#sec1').hide();
-      $('#sec2').show();
-
+      $('#userlist').hide();
+      $('#room-container').show();
      });
      
      });
@@ -107,7 +116,9 @@
    $(function(){
         var socket = io.connect();
         var $users = $('#users');
-      
+        var $createroom = $('#createRoom');
+        var $roomform = $('#room-create');
+  
         socket.emit('new user',username , function(data){
                 });
 
@@ -126,9 +137,19 @@
                 }
                 $users.html(html);
             });
+
+           
+           $createroom.click(function(){
+             $roomform.show();
+       
+     });
+
+        
      });
     </script>
 
+ 
+    
   
     
 
@@ -138,9 +159,6 @@
       });
       </script>
 
-     
-    
- 
     <script src="/javascripts/main.js"></script>
 
   

@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Firebase = require('firebase');
 var session = require('express-session');
-
+var roomservie = require('./roomservice');
 
 var email;
 
@@ -46,11 +46,13 @@ function gotData(data){
 
     console.log(name);
   
+    var rooms = roomservie.rooms;
     if(name){
 
       res.render('users', { 
         title: 'JusTalk | Users',
-        name: name
+        name: name,
+        rooms :rooms
      } );
     }
     

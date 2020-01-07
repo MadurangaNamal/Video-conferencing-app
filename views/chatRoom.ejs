@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
+    <title><%= roomName %></title>
     <meta charset="UTF-8">
 	  <meta name="viewport" content="width=device-width, initial-scale=1">
-   <!--<link rel='stylesheet' href='/stylesheets/style.css' />--> 
+ 
 
-    <link rel="icon" type="image/png" href="/images/icons/favicon.ico"/>
+     <link rel="icon" type="image/png" href="/images/icons/favicon.ico"/>
    
       <link rel="stylesheet" type="text/css" href="/vendor/bootstrap/css/bootstrap.min.css">
+
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  
 
       <link rel="stylesheet" type="text/css" href="/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
    
@@ -29,16 +33,28 @@
     <div class="limiter">
       <div class="container-login100">
         <div class="wrap-login100">
-          <div class="overflow-auto" id="message_container"></div>
-          <form id="send_container">
-              <div class="input-group">
-                  <span class="input-group-addon">Message</span>
-                  <input id="message_input" type="text" class="form-control" name="msg" placeholder="Enter text">
-                  <button type="submit" class="btn btn-primary" id="send_button">Send</button>
-                </div>
+          <div class="container">
         
-            
-          </form>
+          <div id="msgArea" class="row">
+              <div class="col-md-4">
+                      <div class="well">
+                          <h3>Online users</h3>
+                          <ul class="list-group" id="users"></ul> 
+                      </div>
+              </div>
+              <div class="col-md-8">
+                  <div class="chat" id="chat"></div>
+  
+                 <form id="messageForm">
+                  <div class="form-group">
+                      <textarea name="" id="message" class="form-control" placeholder="Type a message"></textarea><br>
+                      <input type="submit" class="btn btn-primary" value="Send"/>
+                  </div>
+  
+                 </form>
+              </div>
+          </div>
+      </div>
         </div>
       </div>
     </div>
@@ -57,9 +73,15 @@
  
     <script>
      $(function(){
+      var socket = io.connect();
+      var $msg_container = $('#message_container');
+      var $msg_form = $('#send_container');
+      var $msg_input = $('#message_input');
 
 
-
+      socket.on('chat-message' , data=>{
+        appendMessage()
+      })
       
      });
     </script>
