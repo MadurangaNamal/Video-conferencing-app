@@ -58,7 +58,7 @@
                 <h3>Available Rooms</h3><br> 
                <% Object.keys(rooms).forEach(room =>{ %>
               <div><%= room %> &nbsp;
-              <button  class="btn btn-primary" onclick="window.location = '/chatRoom/<%= room %>?username=<%= name %>';">Send Request</button>
+              <button  class="btn btn-primary" onclick="window.location = '/chatRoom/<%= room %>?username=<%= name %>';">Chat</button>
               </div> 
                 <% }) %>
             </div>

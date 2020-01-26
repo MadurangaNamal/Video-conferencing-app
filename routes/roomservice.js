@@ -1,12 +1,8 @@
 var express = require('express');
 var router = express.Router();
-var io = require('socket.io');
-var randomstring = require("randomstring");
+
 
 const rooms = {}
-/*router.get('/', function(req, res, next) {
-    res.render('chatRoom', { title: 'JusTalk | Chat Room', rooms: rooms });
-});*/
 
 router.get('/:room', (req , res ) =>{
   if(rooms[req.params.room] == null){
@@ -25,6 +21,7 @@ router.post('/room', (req , res )=>{
     rooms[req.body.room] = { users: {} } 
     res.redirect(req.body.room) 
 });
+
 
 router.get('/video', function(req, res, next) {
   res.render('videocall', { title: 'JusTalk | Video-call' });

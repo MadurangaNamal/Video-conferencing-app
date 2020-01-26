@@ -3,12 +3,12 @@ var bodyParser = require('body-parser');
 var Firebase = require('firebase');
 var session = require('express-session');
 const app = express();
+var rmservice = require('./routes/roomservice')
 
 
-//const user = require('./routes/users');
-//const name = user.name;
 users = [];
 connections = [];
+const rooms = rmservice.rooms;
 
 
 app.use(function(req, res, next) { //allow cross origin requests
@@ -65,13 +65,9 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/chatRoom', roomserviceRouter);
 
-/*io.on('connection', function(socket){
-    console.log('a user connected');
-});*/
 
 app.post('/users/add', function(req, res){
 
-  
   var data = {
     "Email":req.body.email,
     "UserName":req.body.username
@@ -84,30 +80,22 @@ app.post('/users/add', function(req, res){
     }
   });
 });
-/*
-io.sockets.on('connection', function (socket) {
 
-  console.log('a user connected');
-  socket.on('disconnect', function(){
-    console.log('user disconnected');
-  });
-});
-*/
 io.sockets.on('connection', function(socket){
   connections.push(socket);
- // console.log(socket);
   console.log('Conneted : %s sockets connected', connections.length);
 
   socket.on('disconnect', function(data){
-     // if(!socket.username) return;
+    
       users.splice(users.indexOf(socket.username), 1);
       updateUsers();
       connections.splice(connections.indexOf(socket), 1);
+      
   console.log('Disconneted : %s sockets connected', connections.length);
 });
 
  
-
+//app users
   socket.on('new user', function(data, callback){
       callback(true);
       socket.username = data;
@@ -119,9 +107,24 @@ io.sockets.on('connection', function(socket){
       io.sockets.emit('get users', users);
   };
 
+  //room
+   socket.on('newchatusers',function(data) {
+   
+    socket.join(data.room)
+    rooms[data.room].users[socket.id] = data.name
+   
+       console.log(rooms);
+      // updatechatUsers(rooms[data.room].users);
+      socket.to(data.room).emit('get chat users', {chatuser :rooms[data.room].users[socket.id]} );
+ });
+
+
+
+
+
   });
 
-
+//setting port
 http.listen(port, function(){
   console.log('listening on *:'+port);
 });
