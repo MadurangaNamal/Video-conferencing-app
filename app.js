@@ -107,6 +107,11 @@ io.sockets.on('connection', function(socket){
       io.sockets.emit('get users', users);
   };
 
+  socket.on('get-chat-message', (room,message) =>{
+    socket.to(room).broadcast.emit('chat-message', { message: message, name: rooms[room].users[socket.id] })
+
+  })
+
   //room
    socket.on('newchatusers',function(data) {
    
@@ -116,8 +121,12 @@ io.sockets.on('connection', function(socket){
        console.log(rooms);
       // updatechatUsers(rooms[data.room].users);
       socket.to(data.room).emit('get chat users', {chatuser :rooms[data.room].users[socket.id]} );
- });
+ })
 
+ socket.on('send-message', (room, message) => {
+   console.log(message)
+  io.in(room).emit('chat-message', { message: message })
+})
 
 
 

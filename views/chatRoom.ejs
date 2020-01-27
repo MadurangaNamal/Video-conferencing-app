@@ -46,7 +46,7 @@
                     <span class="online_icon"></span>
                   </div>
                   <div class="user_info">
-                    <span>Chat with <%= roomName %></span>
+                    <span>JusTalk</span>
                   </div>
                   <div class="video_cam">
                     <span><i class="fas fa-video"></i></span>
@@ -70,7 +70,7 @@
                   </div>
                   <div id="message-container" class="msg_cotainer">
                     Hi, how are you samim?
-                    <span class="msg_time">8:40 AM, Today</span>
+                    <span id="time" class="msg_time">8:40 AM, Today</span>
                   </div>
                 </div>
                 
@@ -85,14 +85,17 @@
                 </div>
                 
               </div>
+
+            
               <div class="card-footer">
                 <div class="input-group">
-                  <textarea name="" class="form-control type_msg" placeholder="Type your message..."></textarea>
+                  <textarea name="" id="message-input" class="form-control type_msg" placeholder="Type your message..."></textarea>
                   <div class="input-group-append">
-                    <span class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></span>
+                    <span class="input-group-text send_btn"><i id="send-button" class="fas fa-location-arrow"></i></span>
                   </div>
                 </div>
               </div>
+
             </div>
           </div>
         </div>
@@ -117,6 +120,8 @@
       var $user = url.substr((url.indexOf('=')+1));
       var $admin = username;  
 
+    
+
       var n = url.localeCompare($user);
       if(n==0){$name = $admin;}
       else{$name = $user;}
@@ -139,9 +144,33 @@
                     html += '<li class="list-group-item">'+data[i]+'</li>';
                 }
               */
-              html += '<li class="list-group-item">'+data.chatuser+'</li>';
+              html += '<li class="list-group-item">'+data.chatuser+' Joined</li>';
                 $users.html(html);
-            });          
+            });   
+
+           // var $messageform =  $('#msg_form');
+            var $messageText = $('#message-input');
+            var $sendbtn = $('#send-button');
+
+            $sendbtn.click(function( ) {
+ 
+          var message = $messageText.val();
+          message = $name+':'+message;
+          socket.emit('send-message', $admin, message)    
+          $messageText.val('');
+
+        
+  });
+
+  socket.on('chat-message', data => {
+  alert(data.message)
+})
+       
+
+
+
+
+
      });
 
     </script>
