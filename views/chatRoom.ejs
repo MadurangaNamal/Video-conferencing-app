@@ -18,7 +18,7 @@
     <link rel="stylesheet" type="text/css" href="/stylesheets/chatstyle.css">
 
       <script src="/socket.io/socket.io.js"></script>
-      <script src="/routes/roomservice.js"></script>
+    
     
     </head>
   <body>
@@ -63,30 +63,7 @@
                   </ul>
                 </div>
               </div>
-              <div class="card-body msg_card_body">
-                <div class="d-flex justify-content-start mb-4">
-                  <div class="img_cont_msg">
-                    <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img_msg">
-                  </div>
-                  <div id="message-container" class="msg_cotainer">
-                    Hi, how are you samim?
-                    <span id="time" class="msg_time">8:40 AM, Today</span>
-                  </div>
-                </div>
-                
-                <div class="d-flex justify-content-end mb-4">
-                  <div class="msg_cotainer_send">
-                    You are welcome
-                    <span class="msg_time_send">9:05 AM, Today</span>
-                  </div>
-                  <div class="img_cont_msg">
-                
-                  </div>
-                </div>
-                
-              </div>
-
-            
+              <div id="msg-container" class="card-body msg_card_body"></div>
               <div class="card-footer">
                 <div class="input-group">
                   <textarea name="" id="message-input" class="form-control type_msg" placeholder="Type your message..."></textarea>
@@ -151,6 +128,8 @@
            // var $messageform =  $('#msg_form');
             var $messageText = $('#message-input');
             var $sendbtn = $('#send-button');
+            var $messagecontainer = $('#msg-container');
+            var $msg = '';
 
             $sendbtn.click(function( ) {
  
@@ -163,8 +142,38 @@
   });
 
   socket.on('chat-message', data => {
-  alert(data.message)
-})
+ // alert(data.message+' '+data.sendername)
+
+    var n = (data.sendername).localeCompare($name);
+    var time = new Date();
+   var msgtime = time.getHours() + ":" + time.getMinutes();
+      if(n==0){
+        $msg+='<div class="d-flex justify-content-start mb-4">'+
+                  '<div class="img_cont_msg">'+
+                    '<img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img_msg">'+
+                  '</div>'+
+                  '<div id="message-container" class="msg_cotainer">'+
+                    data.message +
+                    '<span class="msg_time">'+msgtime+'</span>'+
+                  '</div>'+
+                '</div>';
+      }
+      else{
+        $msg+= '<div class="d-flex justify-content-end mb-4">'+
+                  '<div class="msg_cotainer_send">'+
+                      data.message +
+                   '<span class="msg_time_send">'+msgtime+'</span>'+
+                  '</div>'+
+                  '<div class="img_cont_msg">'+
+                    ' <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img_msg">'+
+                      '</div>'+
+                '</div>';
+      }
+
+  
+
+                $messagecontainer.html($msg);   
+});
        
 
 

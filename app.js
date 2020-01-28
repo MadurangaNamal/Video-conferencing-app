@@ -124,8 +124,8 @@ io.sockets.on('connection', function(socket){
  })
 
  socket.on('send-message', (room, message) => {
-   console.log(message)
-  io.in(room).emit('chat-message', { message: message })
+   //console.log(rooms[room].users[socket.id])
+  io.in(room).emit('chat-message', { message: message, sendername: rooms[room].users[socket.id] })
 })
 
 
