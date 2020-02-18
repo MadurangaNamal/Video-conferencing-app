@@ -19,7 +19,6 @@
 
       <script src="/socket.io/socket.io.js"></script>
     
-    
     </head>
   <body>
 
@@ -29,9 +28,10 @@
             <div class="card mb-sm-3 mb-md-0 contacts_card">
             <div class="card-header">
                 <img src="/images/img-01.png" alt="IMG" height="50dp" width="50dp">
+                <span>JusTalk</span>
             </div>
             <div class="card-body contacts_body">
-              <ui id="users" class="contacts"></ui>
+              <ul id="users" class="contacts"></ul>
             </div>
             <div class="card-footer"></div>
             
@@ -46,7 +46,7 @@
                     <span class="online_icon"></span>
                   </div>
                   <div class="user_info">
-                    <span>JusTalk</span>
+                   
                   </div>
                   <div class="video_cam">
                     <span><i class="fas fa-video"></i></span>
@@ -89,15 +89,26 @@
     <div id="mydiv" data-test=<%= roomName %>></div>
     <script>
        var username = document.getElementById('mydiv').dataset.test
+
+       if (username === "") {
+        window.location = 'http://localhost:3000/';
+}
+       //msgscrollbar
+       function updateScroll(){
+    var element = document.getElementById("msg-container");
+    element.scrollTop = element.scrollHeight;
+}
      $(function(){
       var socket = io.connect();
       var $name;
       var $users = $('#users');
       var url = window.location+"";
       var $user = url.substr((url.indexOf('=')+1));
-      var $admin = username;  
-
+      var $admin = username; 
+     // var $msgcontainer = $('#msg-container')
     
+    
+   
 
       var n = url.localeCompare($user);
       if(n==0){$name = $admin;}
@@ -114,16 +125,48 @@
                 });
 
 
-      socket.on('get chat users', function(data){
+      socket.on('user-connected', function(data){
+                
+      /*  var html = '';
+           
+                  for(i = 0; i<data.length; i++){
+                   html += '<li class="list-group-item">'+data[i]+'</li>';
+               }
+                
+            //  html += '<li class="list-group-item">'+data.chatuser+' Joined</li>';
+                $users.html(html);
+            */
+
+          
+            confirm(data.name+' Connected');
+              }); 
+              
+             /* function removeItem(array, item){
+                  for(var i in array){
+                  if(array[i]==item){
+                    array.splice(i,1);
+               break;
+                }}}
+
+              function updateusers(){
                 var html = '';
            
-              /*  for(i = 0; i<data.length; i++){
-                    html += '<li class="list-group-item">'+data[i]+'</li>';
-                }
-              */
-              html += '<li class="list-group-item">'+data.chatuser+' Joined</li>';
-                $users.html(html);
-            });   
+           for(i = 0; i<roomusers.length; i++){
+            html += '<li class="list-group-item">'+roomusers[i]+'</li>';
+        }
+         
+     //  html += '<li class="list-group-item">'+data.chatuser+' Joined</li>';
+         $users.html(html);
+              }  
+*/
+              socket.on('user-disconnected', function(data){
+
+               
+                removeItem(roomusers, data.name);
+                
+           
+                      confirm(data.name+' Disconnected');
+                        });      
 
            // var $messageform =  $('#msg_form');
             var $messageText = $('#message-input');
@@ -134,7 +177,8 @@
             $sendbtn.click(function( ) {
  
           var message = $messageText.val();
-          message = $name+':'+message;
+         // message = $name+"\t"+message;
+
           socket.emit('send-message', $admin, message)    
           $messageText.val('');
 
@@ -143,30 +187,37 @@
 
   socket.on('chat-message', data => {
  // alert(data.message+' '+data.sendername)
-
+          setInterval(updateScroll,1000);
     var n = (data.sendername).localeCompare($name);
     var time = new Date();
    var msgtime = time.getHours() + ":" + time.getMinutes();
       if(n==0){
-        $msg+='<div class="d-flex justify-content-start mb-4">'+
+        $msg+= '<div class="d-flex justify-content-end mb-4">'+
+                  '<div class="msg_cotainer_send">'+ 
+                    '<small><b>'+data.sendername+'</b></small><br>'+  
+                      data.message +
+                      '<span class="msg_time">'+msgtime+'</span>'+
+                  '</div>'+
+
                   '<div class="img_cont_msg">'+
-                    '<img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img_msg">'+
-                  '</div>'+
-                  '<div id="message-container" class="msg_cotainer">'+
-                    data.message +
-                    '<span class="msg_time">'+msgtime+'</span>'+
-                  '</div>'+
+                    ' <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img_msg">'+
+                  
+                    '</div>'+
+                    
                 '</div>';
       }
       else{
-        $msg+= '<div class="d-flex justify-content-end mb-4">'+
-                  '<div class="msg_cotainer_send">'+
-                      data.message +
-                   '<span class="msg_time_send">'+msgtime+'</span>'+
-                  '</div>'+
+        $msg+='<div class="d-flex justify-content-start mb-4">'+
                   '<div class="img_cont_msg">'+
-                    ' <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img_msg">'+
-                      '</div>'+
+                    '<img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img_msg">'+
+                    '</div>'+
+
+                  '<div id="message-container" class="msg_cotainer">'+
+                    '<small><b>'+data.sendername+'</b></small><br>'+  
+                    data.message +
+                    '<span class="msg_time">'+msgtime+'</span>'+
+                  '</div>'+
+
                 '</div>';
       }
 

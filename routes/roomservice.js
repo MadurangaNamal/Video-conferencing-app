@@ -22,10 +22,10 @@ router.post('/room', (req , res )=>{
     res.redirect(req.body.room) 
 });
 
-
+/*
 router.get('/video', function(req, res, next) {
   res.render('videocall', { title: 'JusTalk | Video-call' });
-});
+});*/
 
 module.exports = router;
 module.exports.rooms = rooms;

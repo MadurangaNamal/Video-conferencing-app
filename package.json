@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./app.js"
+    "start": "nodemon ./app.js",
+    "watch": "npx watchify ./public/main.js -o ./public/bundle.js"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
@@ -17,9 +18,11 @@
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
     "randomstring": "^1.1.5",
+    "simple-peer": "^9.6.2",
     "socket.io": "^2.3.0"
   },
   "devDependencies": {
-    "nodemon": "^1.19.4"
+    "nodemon": "^1.19.4",
+    "watchify": "^3.11.1"
   }
 }

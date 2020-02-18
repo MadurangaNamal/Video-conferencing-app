@@ -22,6 +22,8 @@ body,html{
 }
 .msg_card_body{
     overflow-y: auto;
+    overflow-x:auto; 
+
 }
 .card-header{
     border-radius: 15px 15px 0 0 !important;
@@ -148,6 +150,7 @@ margin-right: 20px;
 .msg_cotainer{
 margin-top: auto;
 margin-bottom: auto;
+max-width: 150px;
 margin-left: 10px;
 border-radius: 25px;
 background-color: #82ccdd;
@@ -157,6 +160,7 @@ position: relative;
 .msg_cotainer_send{
 margin-top: auto;
 margin-bottom: auto;
+max-width: 150px;
 margin-right: 10px;
 border-radius: 25px;
 background-color: #78e08f;
@@ -222,3 +226,9 @@ background-color: rgba(0,0,0,0.2);
 margin-bottom: 15px !important;
 }
 }
+
+small { 
+    font-size: smaller;
+  }
+
+ 
