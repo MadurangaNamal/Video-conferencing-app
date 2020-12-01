@@ -93,6 +93,12 @@
         };
     </script>
 
+    <script>
+    function goBack() {
+      window.history.back();
+    }
+
+    </script>
      
 
 </head>
@@ -101,9 +107,9 @@
 
     <div class="limiter">
         <div class="container-login100">
-            <div class="wrap-login100">
+            <div class="wrap-login100 userBackground">
                 <div class="login100-pic js-tilt" data-tilt>
-                    <h4>JusTalk</h4>
+                    <h4 class="title">JusTalk</h4>
                     <img src="/images/img-01.png" alt="IMG">
                 </div>
 
@@ -138,8 +144,16 @@
 
                     <div class="container-login100-form-btn">
                         <button id="click_button_for_singup" class="login100-form-btn">
-                Sign Up
-              </button>
+                            Sign Up
+                        </button>
+                    </div>
+                    <br>
+                    <div>       
+                        <button onclick="goBack()" class="login100-form-btn">
+                            Login
+                        </button>
+                    
+                    </div>
             </form>
                     </div>
                 </div>

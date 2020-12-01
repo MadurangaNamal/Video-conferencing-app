@@ -6,11 +6,12 @@ const app = express();
 var rmservice = require('./routes/roomservice')
 
 
+
 users = [];
 connections = [];
 const rooms = rmservice.rooms;
-chatusers = [];
-let clients = 0;
+chatusers = {};
+
 
 app.use(function(req, res, next) { //allow cross origin requests
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -43,7 +44,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var roomserviceRouter = require('./routes/roomservice');
-var videoservice = require('./routes/videoservice');
+
 
 
 var http = require('http').createServer(app);
@@ -51,6 +52,7 @@ var io = require('socket.io')(http);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
 
 app.use(logger('dev'));
 //app.use(express.json());
@@ -63,10 +65,11 @@ app.use(cookieParser());
 app.use(session({secret:"madur", resave:false, saveUninitialized:true}));
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/chatRoom', roomserviceRouter);
-app.use('/video',videoservice);
+
 
 /*app.get('/video',(req,res) =>{
   res.sendFile(path.join(__dirname,'video.html'));
@@ -88,26 +91,12 @@ app.post('/users/add', function(req, res){
   });
 });
 
+// handling all socket connections
 io.sockets.on('connection', function(socket){
   connections.push(socket);
-  console.log('Conneted : %s sockets connected', connections.length);
+ // console.log('Conneted : %s sockets connected', connections.length);
 
-  //video call
-
-  socket.on("Newclient", function(){
-    if(clients < 2) {
-        if(clients == 1){
-            this.emit('CreatePeer')
-        }
-    }
-    else
-        this.emit('SessionActive')
-        clients++;
-})
-socket.on('Offer', SendOffer)
-socket.on('Answer', SendAnswer)
-socket.on('disconnect', Disconnect)
-
+ 
   socket.on('disconnect', function(data){
     
       users.splice(users.indexOf(socket.username), 1);
@@ -140,35 +129,46 @@ socket.on('disconnect', Disconnect)
 
   })
 
-  //room
+  //room users
    socket.on('newchatusers',function(data) {
    
+    socket.name = data.name;
     socket.join(data.room)
     rooms[data.room].users[socket.id] = data.name
+
    
-       
-       console.log(rooms);
+       //console.log(rooms);
+       //console.log(rooms[data.room].users);
        socket.to(data.room).broadcast.emit('user-connected',{name:rooms[data.room].users[socket.id]})
-/*
+       io.in(data.room).emit('room users', rooms[data.room].users);
+
+       
+  
+      
        var n = (data.room).localeCompare(data.name);
+       var roomName = data.room;
        if(n==0){
-        chatusers = [];
+        chatusers[''+roomName] = [];//new Array
         }
        
-
-    chatusers.push(rooms[data.room].users[socket.id]);*/
-    
+       
+    chatusers[roomName].push(rooms[data.room].users[socket.id]);
+    console.log(chatusers[roomName]);
       // updatechatUsers(rooms[data.room].users);
     //  io.in(data.room).emit('get chat users', {chatuser :rooms[data.room].users[socket.id]} );
-  //  io.in(data.room).emit('get chat users',chatusers);
+    io.in(data.room).emit('user-list',chatusers[roomName]);
  })
 
 
 
- socket.on('send-message', (room, message) => {
+   socket.on('send-message', (room, message) => {
    //console.log(rooms[room].users[socket.id])
   io.in(room).emit('chat-message', { message: message, sendername: rooms[room].users[socket.id] })
 })
+
+  socket.on('send-callRequest', (room,name,invitation)=>{
+    socket.to(room).broadcast.emit('call-invite',{name:name,invite:invitation})
+  })
 
   });
 
@@ -179,26 +179,6 @@ function getUserRooms(socket) {
     return names
   }, [])
 }
-
-
-  //video
-  function Disconnect() {
-    if (clients > 0) {
-        if (clients <= 2)
-            this.broadcast.emit("Disconnect")
-        clients--
-    }
-}
-
-function SendOffer(offer) {
-    this.broadcast.emit("BackOffer", offer)
-}
-
-function SendAnswer(data) {
-    this.broadcast.emit("BackAnswer", data)
-}
-
-
 
 //setting port
 http.listen(port, function(){

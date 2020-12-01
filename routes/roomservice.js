@@ -1,4 +1,5 @@
 var express = require('express');
+const { static } = require('express');
 var router = express.Router();
 
 
@@ -9,6 +10,7 @@ router.get('/:room', (req , res ) =>{
   //  return res.redirect('/users');
   }
   else{
+    //console.log(rooms);
     res.render('chatRoom', {roomName: req.params.room})
   }
 
@@ -19,6 +21,7 @@ router.post('/room', (req , res )=>{
    // return res.redirect('/')
   }
     rooms[req.body.room] = { users: {} } 
+    //console.log(rooms);
     res.redirect(req.body.room) 
 });
 

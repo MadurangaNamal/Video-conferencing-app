@@ -1,239 +1,349 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= roomName %></title>
-    <meta charset="UTF-8">
-	  <meta name="viewport" content="width=device-width, initial-scale=1">
- 
 
-    
+<head>
+  <title><%= roomName %></title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js"></script>
-  
 
-    <link rel="stylesheet" type="text/css" href="/stylesheets/chatstyle.css">
 
-      <script src="/socket.io/socket.io.js"></script>
-    
-    </head>
-  <body>
 
-      <div class="container-fluid h-100">
-        <div class="row justify-content-center h-100">
-          <div class="col-md-4 col-xl-3 chat">
-            <div class="card mb-sm-3 mb-md-0 contacts_card">
-            <div class="card-header">
-                <img src="/images/img-01.png" alt="IMG" height="50dp" width="50dp">
-                <span>JusTalk</span>
-            </div>
-            <div class="card-body contacts_body">
-              <ul id="users" class="contacts"></ul>
-            </div>
-            <div class="card-footer"></div>
-            
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+    integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js"></script>
+
+
+  <link rel="stylesheet" type="text/css" href="/stylesheets/chatstyle.css">
+
+  <script src="/socket.io/socket.io.js"></script>
+
+  <script>
+    // go back fucntion
+    function goBack() {
+      window.history.back();
+    }
+
+    // on exit function
+//     window.onbeforeunload = function (e) {
+//   var message = "Your confirmation message goes here.",
+//   e = e || window.event;
+//   // For IE and Firefox
+//   if (e) {
+//     e.returnValue = message;
+//   }
+
+//   // For Safari
+//   return message;
+// }; 
+
+  </script>
+
+</head>
+
+<body>
+
+  <div class="container-fluid h-100">
+    <div class="row justify-content-center h-100">
+      <div class="col-md-4 col-xl-3 chat">
+        <div class="card mb-sm-3 mb-md-0 contacts_card">
+          <div class="card-header">
+            <img src="/images/img-01.png" alt="IMG" height="50dp" width="50dp">
+            <span class="title">JusTalk</span>
           </div>
-        </div>
-          <div class="col-md-8 col-xl-6 chat">
-            <div class="card">
-              <div class="card-header msg_head">
-                <div class="d-flex bd-highlight">
-                  <div class="img_cont">
-                    <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img">
-                    <span class="online_icon"></span>
-                  </div>
-                  <div class="user_info">
-                   
-                  </div>
-                  <div class="video_cam">
-                    <span><i class="fas fa-video"></i></span>
-                   
-                  </div>
-                </div>
-                <span id="action_menu_btn"><i class="fas fa-ellipsis-v"></i></span>
-                <div class="action_menu">
-                  <ul>
-                    <li><i class="fas fa-user-circle"></i> View profile</li>
-                    <li><i class="fas fa-users"></i> Add to close friends</li>
-                    <li><i class="fas fa-plus"></i> Add to group</li>
-                    <li><i class="fas fa-ban"></i> Block</li>
-                  </ul>
-                </div>
-              </div>
-              <div id="msg-container" class="card-body msg_card_body"></div>
-              <div class="card-footer">
-                <div class="input-group">
-                  <textarea name="" id="message-input" class="form-control type_msg" placeholder="Type your message..."></textarea>
-                  <div class="input-group-append">
-                    <span class="input-group-text send_btn"><i id="send-button" class="fas fa-location-arrow"></i></span>
-                  </div>
-                </div>
-              </div>
+          <div class="card-body contacts_body">
+            <ul id="users" class="contacts"></ul>
+          </div>
+          <div class="card-footer"></div>
 
+        </div>
+      </div>
+      <div class="col-md-8 col-xl-6 chat">
+        <div class="card">
+          <div class="card-header msg_head">
+            <div class="d-flex bd-highlight">
+              <div class="img_cont">
+                <img src="https://static.turbosquid.com/Preview/001211/379/8P/3D-model-cartoon-boys-head_Z.jpg" class="rounded-circle user_img">
+                <span class="online_icon"></span>
+              </div>
+              <div class="user_info">
+
+              </div>
+              <div class="video_cam">
+                <a id="video_btn" href="http://localhost:8080/" target="_blank"><span><i
+                      class="fas fa-video"></i></span><a>
+
+              </div>
+            </div>
+            <a onclick="goBack()"><span id="action_menu_btn"><i class="fas fa-door-open"></i></span></a>
+
+          </div>
+
+          <div id="msg-container" class="card-body msg_card_body"></div>
+          <div class="card-footer">
+            <div class="input-group">
+              <textarea name="" id="message-input" class="form-control type_msg" placeholder="Message"></textarea>
+              <div class="input-group-append">
+                <span class="input-group-text send_btn"><i id="send-button" class="fas fa-location-arrow"></i></span>
+              </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
+  </div>
 
 
 
-    <script src="/vendor/jquery/jquery-3.2.1.min.js"></script>
+  <script src="/vendor/jquery/jquery-3.2.1.min.js"></script>
 
-    <script src="/vendor/bootstrap/js/popper.js"></script>
-    <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+  <script src="/vendor/bootstrap/js/popper.js"></script>
+  <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
 
- 
-    <div id="mydiv" data-test=<%= roomName %>></div>
-    <script>
-       var username = document.getElementById('mydiv').dataset.test
 
-       if (username === "") {
-        window.location = 'http://localhost:3000/';
-}
-       //msgscrollbar
-       function updateScroll(){
-    var element = document.getElementById("msg-container");
-    element.scrollTop = element.scrollHeight;
-}
-     $(function(){
+  <div id="mydiv" data-test=<%= roomName %>></div>
+  <script>
+
+    //check users
+    var username = document.getElementById('mydiv').dataset.test
+
+    //scroll function
+    // function updateScroll() {
+    //   var element = document.getElementById("msg-container");
+    //   element.scrollTop = element.scrollHeight - element.clientHeight;
+    //   console.log(element.scrollTop);
+    // }
+
+    $(function () {
       var socket = io.connect();
       var $name;
       var $users = $('#users');
-      var url = window.location+"";
-      var $user = url.substr((url.indexOf('=')+1));
-      var $admin = username; 
-     // var $msgcontainer = $('#msg-container')
-    
-    
-   
+      var url = window.location + "";
+      var $user = url.substr((url.indexOf('=') + 1));
+      var $admin = username;
+      var $vbtn = $('#video_btn');
+      // var $msgcontainer = $('#msg-container')
+
+      // console.log(username)
+      // if (username === '') {
+      //   window.location = 'http://localhost:3000/';
+      // }
+
 
       var n = url.localeCompare($user);
-      if(n==0){$name = $admin;}
-      else{$name = $user;}
+      if (n == 0) { $name = $admin; }
+      else { $name = $user; }
       //alert($name);
-     
-
-      var userdata={  
-    room : $admin,  
-    name : $name 
-    };
-     
-      socket.emit('newchatusers', userdata, function(data){
-                });
 
 
-      socket.on('user-connected', function(data){
-                
-      /*  var html = '';
-           
-                  for(i = 0; i<data.length; i++){
-                   html += '<li class="list-group-item">'+data[i]+'</li>';
-               }
-                
-            //  html += '<li class="list-group-item">'+data.chatuser+' Joined</li>';
-                $users.html(html);
-            */
+      var userdata = {
+        room: $admin,
+        name: $name
+      };
 
-          
-            confirm(data.name+' Connected');
-              }); 
-              
-             /* function removeItem(array, item){
-                  for(var i in array){
-                  if(array[i]==item){
-                    array.splice(i,1);
-               break;
-                }}}
+      //invite call
 
-              function updateusers(){
-                var html = '';
-           
-           for(i = 0; i<roomusers.length; i++){
-            html += '<li class="list-group-item">'+roomusers[i]+'</li>';
+      $vbtn.click(function () {
+
+        var invite_msg = "Invited you to video call !!"
+        socket.emit('send-callRequest', $admin, $name, invite_msg)
+      });
+
+
+      socket.emit('newchatusers', userdata, function (data) {
+      });
+
+
+      socket.on('user-connected', function (data) {
+
+        /*  var html = '';
+             
+                    for(i = 0; i<data.length; i++){
+                     html += '<li class="list-group-item">'+data[i]+'</li>';
+                 }
+              //  html += '<li class="list-group-item">'+data.chatuser+' Joined</li>';
+                  $users.html(html);
+              */
+        confirm(data.name + ' Joined !');
+      });
+
+      //see users list
+      socket.on('user-list', function (data) {
+
+        var html = '';
+
+        for (i = 0; i < data.length; i++) {
+          //html += '<li class="list-group-item">'+data[i]+'</li>';
+          html += '<li class="list-group-item list-group-item-success">' + data[i] + '</li>';
         }
-         
-     //  html += '<li class="list-group-item">'+data.chatuser+' Joined</li>';
-         $users.html(html);
-              }  
-*/
-              socket.on('user-disconnected', function(data){
 
-               
-                removeItem(roomusers, data.name);
-                
-           
-                      confirm(data.name+' Disconnected');
-                        });      
+        $users.html(html);
 
-           // var $messageform =  $('#msg_form');
-            var $messageText = $('#message-input');
-            var $sendbtn = $('#send-button');
-            var $messagecontainer = $('#msg-container');
-            var $msg = '';
 
-            $sendbtn.click(function( ) {
- 
-          var message = $messageText.val();
-         // message = $name+"\t"+message;
+      });
 
-          socket.emit('send-message', $admin, message)    
-          $messageText.val('');
 
-        
-  });
 
-  socket.on('chat-message', data => {
- // alert(data.message+' '+data.sendername)
-          setInterval(updateScroll,1000);
-    var n = (data.sendername).localeCompare($name);
-    var time = new Date();
-   var msgtime = time.getHours() + ":" + time.getMinutes();
-      if(n==0){
-        $msg+= '<div class="d-flex justify-content-end mb-4">'+
-                  '<div class="msg_cotainer_send">'+ 
-                    '<small><b>'+data.sendername+'</b></small><br>'+  
-                      data.message +
-                      '<span class="msg_time">'+msgtime+'</span>'+
-                  '</div>'+
 
-                  '<div class="img_cont_msg">'+
-                    ' <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img_msg">'+
-                  
-                    '</div>'+
-                    
-                '</div>';
-      }
-      else{
-        $msg+='<div class="d-flex justify-content-start mb-4">'+
-                  '<div class="img_cont_msg">'+
-                    '<img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img_msg">'+
-                    '</div>'+
 
-                  '<div id="message-container" class="msg_cotainer">'+
-                    '<small><b>'+data.sendername+'</b></small><br>'+  
-                    data.message +
-                    '<span class="msg_time">'+msgtime+'</span>'+
-                  '</div>'+
+      //call invite
+      socket.on('call-invite', function (data) {
 
-                '</div>';
-      }
+        var result = confirm(data.name + " " + data.invite);
+        if (result == true) {
+          //  window.location = 'http://localhost:8080/';
+          window.open(
+            'http://localhost:8080/',
+            '_blank');
+        }
+        else {
 
+        }
+      });
+
+      //get room members list
+      socket.on('room users', function (data) {
+
+        var html = '';
+
+        for (i = 0; i < data.length; i++) {
+          html += '<li class="list-group-item">' + data[i] + '</li>';
+        }
+
+        $users.html(html);
+
+
+
+
+      });
+
+      /* function removeItem(array, item){
+           for(var i in array){
+           if(array[i]==item){
+             array.splice(i,1);
+        break;
+         }}}
+
+       function updateusers(){
+         var html = '';
+    
+    for(i = 0; i<roomusers.length; i++){
+     html += '<li class="list-group-item">'+roomusers[i]+'</li>';
+ }
   
+//  html += '<li class="list-group-item">'+data.chatuser+' Joined</li>';
+  $users.html(html);
+       }  
+*/
+      socket.on('user-disconnected', function (data) {
 
-                $messagecontainer.html($msg);   
-});
+        var m = $admin.localeCompare(data.name);
+        if(m == 0){
+          confirm("Admin Disconnected");
+          window.location.href = "/users";
+        }
+        else{
+        confirm(data.name + ' Disconnected');
+        }
+        removeItem(roomusers, data.name);
+
+      });
+
+      // var $messageform =  $('#msg_form');
+      var $messageText = $('#message-input');
+      var $sendbtn = $('#send-button');
+      var $messagecontainer = $('#msg-container');
+      var $msg = '';
+    
+
+
+
+      $sendbtn.click(function () {
+
+        var message = $messageText.val();
+        // message = $name+"\t"+message;
+
+        socket.emit('send-message', $admin, message)
+        $messageText.val('');
+
+
+      });
+
+      $messageText.keyup(function (event) {
+        if (event.keyCode === 13) {
+          var message = $messageText.val();
+        // message = $name+"\t"+message;
+
+        socket.emit('send-message', $admin, message)
+        $messageText.val('');
+    
+        }
+      });
+
+      socket.on('chat-message', data => {
+        // alert(data.message+' '+data.sendername)
+
+
+        // setInterval(updateScroll, 1000);
+
+        $messagecontainer.animate({ 
+                    scrollTop: $messagecontainer.get(0).scrollHeight 
+                }, 1000);
        
 
+        var n = (data.sendername).localeCompare($name);
+        var time = new Date();
+        var msgtime = time.getHours() + ":" + time.getMinutes();
+        if (n == 0) {
+          $msg += '<div class="d-flex justify-content-end mb-4">' +
+            '<div class="msg_cotainer_send">' +
+            '<div class="msg_cotainer_send_name">' + data.sendername + '</div><br>' +
+            '<div class="msg_cotainer_send_box">' + data.message + '<span class="msg_time">' + msgtime + '</span>' + '</div>' +
+            // '<span class="msg_time">' + msgtime + '</span>' +
+            '</div>' +
+
+            '<div class="img_cont_msg">' +
+            ' <img src="https://static.turbosquid.com/Preview/001189/559/XJ/caucasian-male-head-6-3D_DHQ.jpg" class="rounded-circle user_img_msg">' +
+
+            '</div>' +
+
+            '</div>';
+        }
+        else {
+          $msg += '<div class="d-flex justify-content-start mb-4">' +
+            '<div class="img_cont_msg">' +
+            '<img src="https://static.turbosquid.com/Preview/001211/379/8P/3D-model-cartoon-boys-head_Z.jpg" class="rounded-circle user_img_msg">' +
+            '</div>' +
+
+            '<div id="message-container" class="msg_cotainer">' +
+            '<div class="msg_cotainer_name">' + data.sendername + '</div><br>' +
+            '<div class="msg_cotainer_box">' + data.message + '<span class="msg_time">' + msgtime + '</span>' + '</div>' +
+            // '<span class="msg_time">' + msgtime + '</span>' +
+            '</div>' +
+
+            '</div>';
+        }
+
+
+
+        $messagecontainer.html($msg);
+      });
 
 
 
 
-     });
 
-    </script>
-  
-  </body>
+
+    });
+
+  </script>
+
+</body>
+
 </html>

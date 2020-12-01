@@ -46,26 +46,52 @@ var password = document.getElementById('pasword_container').value;
 
 firebase.auth().signInWithEmailAndPassword(email, password)
 .then(function(){
-
+  console.log("tests")
 document.getElementById("login_form").submit();
-},
+})
+.catch(
 
 function(error) {
-    
+  console.log("testserr")
     var errorCode = error.code;
     var errorMessage = error.message;
     
     if (errorCode == 'auth/user-not-found') {
         alert('Unregisterd Email !!');
+        window.location.href = "/";
     } else {
         alert(errorMessage);
+        window.location.href = "/";
     }
     console.log(error);
    
-}
-
-)
+});
 };
+// function handleSignIn() {
+// var email = document.getElementById('email_container').value;
+// var password = document.getElementById('pasword_container').value;
+
+// firebase.auth().signInWithEmailAndPassword(email, password)
+// .then(function(){
+
+// document.getElementById("login_form").submit();
+// },
+
+// function(error) {
+    
+//     var errorCode = error.code;
+//     var errorMessage = error.message;
+    
+//     if (errorCode == 'auth/user-not-found') {
+//         alert('Unregisterd Email !!');
+//     } else {
+//         alert(errorMessage);
+//         window.location.href = "/";
+//     }
+//     console.log(error);
+   
+// })
+// };
 
        function initApp() {
 
@@ -78,13 +104,14 @@ function(error) {
     </script>
 
   </head>
+
   <body>
 
     <div class="limiter">
       <div class="container-login100">
-        <div class="wrap-login100">
+        <div class="wrap-login100 userBackground">
           <div class="login100-pic js-tilt" data-tilt>
-            <h4>JusTalk</h4>
+            <h4 class="title">JusTalk</h4>
             <img src="/images/img-01.png" alt="IMG">
           </div>
   
@@ -117,14 +144,7 @@ function(error) {
        </form>
          
   
-            <div class="text-center p-t-12">
-              <span class="txt1">
-                Forgot
-              </span>
-              <a class="txt2" href="#">
-                Username / Password?
-              </a>
-            </div><br><br>
+            <br><br>
 
 
   
