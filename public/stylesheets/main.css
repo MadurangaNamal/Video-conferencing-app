@@ -483,4 +483,7 @@ iframe {
   font-family: -webkit-pictograph;
 }
 
-
+.subtitle button:hover{
+ transform: scale(1.5);
+ transition: transform .3s;
+}

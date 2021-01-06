@@ -106,8 +106,19 @@ io.sockets.on('connection', function(socket){
       //chat rooms
       getUserRooms(socket).forEach(room => {
         socket.to(room).broadcast.emit('user-disconnected', {name:rooms[room].users[socket.id]})
-        delete rooms[room].users[socket.id]
+        console.log(rooms[room].users[socket.id])
+
+        var n = (room).localeCompare(rooms[room].users[socket.id]);
+        if(n==0){
+         delete rooms[room].users[socket.id]
+         delete rooms[room]
+         }
+         else{
+         delete rooms[room].users[socket.id]
+         }
+
       })
+      console.log(rooms)
   console.log('Disconneted : %s sockets connected', connections.length);
 });
 
@@ -153,7 +164,7 @@ io.sockets.on('connection', function(socket){
        
        
     chatusers[roomName].push(rooms[data.room].users[socket.id]);
-    console.log(chatusers[roomName]);
+    //console.log(chatusers[roomName]);
       // updatechatUsers(rooms[data.room].users);
     //  io.in(data.room).emit('get chat users', {chatuser :rooms[data.room].users[socket.id]} );
     io.in(data.room).emit('user-list',chatusers[roomName]);
